@@ -1,12 +1,18 @@
 <HTML>
-<head>
-	<link rel="stylesheet" type="text/css" href="static/style.css">.
-	<script src="static/script.js"></script>
-	<title>Atlas Heatmap</title>
-</head>
-<body>
-	<div id="scroll">
-	    <img class="blue" src="http://www.wired.com/images_blogs/photos/uncategorized/2008/03/04/puppy.jpg"/>
-	</div>
-</body>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="static/style.css">
+		<script src="static/script.js"></script>
+		<title>Atlas Heatmap</title>
+	</head>
+	<body>
+		<div id="container">
+			
+			<div ondragstart="return false" id=drag-img>
+					<img id="grid" src="static/grid.png"/>
+					<img id="map" src="static/map.jpg" />
+			</div>
+			
+		</div>
+	</body>
 </HTML>

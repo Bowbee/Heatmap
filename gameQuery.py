@@ -15,46 +15,47 @@ pool = Pool(size=50)
 
 
 def get_server_stats(address):
-    server = ServerQuerier(address, timeout=SERVER_TIMEOUT)
-    try:
-        info = server.info()
+	server = ServerQuerier(address, timeout=SERVER_TIMEOUT)
+	try:
+		info = server.info()
 
-        logging.info(u'{player_count},{max_players},{server_name}'.format(**info))
-        return True
-    except (NotImplementedError, NoResponseError, BrokenMessageError):
-        pass
+		logging.info(u'{player_count},{max_players},{server_name}'.format(**info))
+		return True
+	except (NotImplementedError, NoResponseError, BrokenMessageError):
+		pass
 
 
 def find_servers():
-    count = 0
-    greenlets = []
-    master = MasterServerQuerier(
-        address=(MASTER_HOST, 27011), timeout=MASTER_TIMEOUT
-    )
-    try:
-        for address in master.find(region='rest',
-                                gamedir=u"atlas"):
-            greenlets.append(pool.spawn(get_server_stats, address))
-            count += 1
-    except NoResponseError as e:
-        # Protocol is UDP so there's no "end"
-        if u'Timed out' not in e.message:
-            logging.warning('Error querying master server: {0}'.format(e))
-    finally:
-        logging.info('Found {0} addresses'.format(count))
-        return greenlets
+	count = 0
+	greenlets = []
+	master = MasterServerQuerier(
+		address=(MASTER_HOST, 27011), timeout=MASTER_TIMEOUT
+	)
+	try:
+		for address in master.find(region='rest',
+								gamedir=u"atlas"):
+			greenlets.append(pool.spawn(get_server_stats, address))
+			count += 1
+	except NoResponseError as e:
+		# Protocol is UDP so there's no "end"
+		if u'Timed out' not in e.message:
+			print("Timed out")
+	finally:
+		return greenlets
 
 
 if __name__ == '__main__':
-    while(True):
-        handler = logging.handlers.RotatingFileHandler("atlasserver.txt", mode = 'w', backupCount = 1)
-        logging.basicConfig(filename="atlasserver.txt", level=logging.INFO, format='%(message)s')
-        logging.getLogger().addHandler(handler)
-        print("Server running...")
-        results = find_servers()
-
-        logging.info('Counting results...')
-        results = [result.get() for result in results]
-
-        logging.info('Collected {0}'.format(len(results)))
-        #logging.handlers.RotatingFileHandler.doRollover()
+	while(True):
+		f = open("atlasserver.txt", "w")
+		f.write("")
+		f.close()
+		handler = logging.handlers.RotatingFileHandler("atlasserver.txt", mode = 'w', backupCount = 1)
+		logging.basicConfig(filename="atlasserver.txt", level=logging.INFO, format='%(message)s')
+		logging.getLogger().addHandler(handler)
+		print("Server running...")
+		results = find_servers()
+		results = [result.get() for result in results]
+		f = open("atlasserver.txt", "w")
+		f.write("")
+		f.close()
+		#logging.handlers.RotatingFileHandler.doRollover()

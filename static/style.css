@@ -1,0 +1,28 @@
+#drag-img {
+    cursor: move;
+    position: relative;
+    width: 3000px;
+    height: 3000px;
+  }
+  
+  #container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    background: white;
+    height: 100%;
+    width: 100%;
+  }
+
+  #grid{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4096px;
+    height: 4096px;
+  }
+  #image{
+      width:4096px;
+      height: 4096px;
+  }
